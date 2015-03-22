@@ -109,9 +109,6 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
-if [[ $_OSARCH == yum ]];then
-	yum -y install cairo cairo-devel gavl gavl-devel
-fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
@@ -119,12 +116,12 @@ wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--disable-shared \
-	--disable-fast-install
+	--disable-fast-install \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS
 make -j $PROCESSOR
 make install
 ldconfig

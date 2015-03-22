@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libilbc'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libquvi'
 #######################################################################
 # install
 #######################################################################
@@ -46,9 +46,9 @@ export TMPDIR=$HOME/tmp
 #######################################################################
 # package
 #######################################################################
-package='libilbc'
-version='2.0.2'
-extension='tar.gz'
+package='libquvi-scripts'
+version='0.9.20131130'
+extension='tar.xz'
 #######################################################################
 # Detect platform
 #######################################################################
@@ -115,7 +115,6 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-autoreconf -fiv
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \

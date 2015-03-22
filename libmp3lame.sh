@@ -119,8 +119,6 @@ wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
 	--prefix=$PREFIX_DIR \
 	--enable-mp3rtp \
 	--enable-nasm \
@@ -128,7 +126,9 @@ chmod +x ./configure && ./configure \
 	--disable-shared \
 	--disable-rpath \
 	--disable-mp3x \
-	--disable-fast-install
+	--disable-fast-install \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS
 make -j $PROCESSOR
 make install
 ldconfig

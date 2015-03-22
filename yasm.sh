@@ -119,11 +119,11 @@ wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
 	--prefix=$PREFIX_DIR \
 	--disable-python \
-	--disable-python-bindings
+	--disable-python-bindings \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS
 make
 make install
 ldconfig

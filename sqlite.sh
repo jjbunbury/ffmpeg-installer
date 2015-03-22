@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libilbc'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/sqlite'
 #######################################################################
 # install
 #######################################################################
@@ -46,8 +46,8 @@ export TMPDIR=$HOME/tmp
 #######################################################################
 # package
 #######################################################################
-package='libilbc'
-version='2.0.2'
+package='sqlite-autoconf'
+version='3080803'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -109,13 +109,15 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install cairo cairo-devel gavl gavl-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-autoreconf -fiv
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \

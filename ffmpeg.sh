@@ -207,7 +207,7 @@ chmod +x ./configure
 	--disable-openal \
 	--disable-opencl \
 	--disable-opengl \
-	--enable-openssl \
+	--disable-openssl \
 	--disable-x11grab \
 	--enable-pic \
 	--enable-thumb \

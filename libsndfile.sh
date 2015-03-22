@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libilbc'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/frei0r'
 #######################################################################
 # install
 #######################################################################
@@ -46,8 +46,8 @@ export TMPDIR=$HOME/tmp
 #######################################################################
 # package
 #######################################################################
-package='libilbc'
-version='2.0.2'
+package='libsndfile'
+version='1.0.25'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -109,20 +109,35 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install cairo cairo-devel gavl gavl-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-autoreconf -fiv
+
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--disable-shared \
 	--disable-fast-install \
 	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS
+	CPPFLAGS=$CPPFLAGS \
+	FLAC_CFLAGS=$PREFIX_DIR/include \
+	FLAC_LIBS=$PREFIX_DIR/lib \
+	OGG_CFLAGS=$PREFIX_DIR/include \
+	OGG_LIBS=$PREFIX_DIR/lib \
+	SPEEX_CFLAGS=$PREFIX_DIR/include \
+	SPEEX_LIBS=$PREFIX_DIR/lib \
+	VORBIS_CFLAGS=$PREFIX_DIR/include \
+	VORBIS_LIBS=$PREFIX_DIR/lib \
+	VORBISENC_CFLAGS=$PREFIX_DIR/include \
+	VORBISENC_LIBS=$PREFIX_DIR/lib \
+	SQLITE3_CFLAGS=$PREFIX_DIR/include \
+	SQLITE3_LIBS=$PREFIX_DIR/lib
 make -j $PROCESSOR
 make install
 ldconfig

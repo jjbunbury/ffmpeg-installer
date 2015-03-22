@@ -171,6 +171,19 @@ else
         exit
 fi
 
+#sqlite
+sh sqlite.sh
+if [[ -e $PREFIX_DIR/lib/libsqlite3.so || -e $PREFIX_DIR/lib/libsqlite3.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"sqlite installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
 #######################################################################
 # deprecated 
 #######################################################################
@@ -210,7 +223,7 @@ fi
 #openal \
 #opencl \
 #opengl \
-
+#openssl
 #x11grab
 #######################################################################
 # uses package manager dependency
@@ -264,8 +277,18 @@ sh libopencore-amr.sh
 
 #libopus
 sh libopus.sh
+
+#libquvi-scripts
+#requires: libquvi
+sh libquvi-scripts.sh
+
 #libquvi
 #requires: libquvi_scripts, glib, libcurl, libproxy, liblua
+sh libquvi.sh
+
+#quvi
+# libquvi, libcurl, gobject, glib, json_glib, libxml
+sh quvi.sh
 
 #librtmp
 #libspeex
@@ -323,7 +346,12 @@ else
         exit
 fi
 
+#libsndfile
+#requires: FLAC, OGG, SPEEX, VORBIS, VORBISENC, SQLITE3
+
 #libtwolame
+#requires: libsndfile
+sh libtwolame.sh
 
 #libvo-aacenc
 sh vo-aacenc.sh
@@ -339,7 +367,6 @@ sh vo-amrwbenc.sh
 #sh libx265.sh
 
 #libxvid
-#openssl
 
 #######################################################################
 # end
