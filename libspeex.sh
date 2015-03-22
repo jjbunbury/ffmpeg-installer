@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -118,12 +118,15 @@ cd $package-$version
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
-	--disable-shared \
-	--disable-fast-install \
+	--enable-shared \
+	--enable-fast-install \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
-	SPEEXDSP_CFLAGS=$PREFIX_DIR/include \
-	SPEEXDSP_LIBS=$PREFIX_DIR/lib
+	SPEEXDSP_LIBS="$LDFLAGS -lspeexdsp" \
+	SPEEXDSP_CFLAGS=$CPPFLAGS \
+	OGG_LIBS="$LDFLAGS -logg" \
+	OGG_CFLAGS=$CPPFLAGS \
+
 make -j $PROCESSOR
 make install
 ldconfig

@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/frei0r'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libsndfile'
 #######################################################################
 # install
 #######################################################################
@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -122,22 +122,22 @@ cd $package-$version
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
-	--disable-shared \
-	--disable-fast-install \
+	--enable-shared \
+	--enable-fast-install \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
-	FLAC_CFLAGS=$PREFIX_DIR/include \
-	FLAC_LIBS=$PREFIX_DIR/lib \
-	OGG_CFLAGS=$PREFIX_DIR/include \
-	OGG_LIBS=$PREFIX_DIR/lib \
-	SPEEX_CFLAGS=$PREFIX_DIR/include \
-	SPEEX_LIBS=$PREFIX_DIR/lib \
-	VORBIS_CFLAGS=$PREFIX_DIR/include \
-	VORBIS_LIBS=$PREFIX_DIR/lib \
-	VORBISENC_CFLAGS=$PREFIX_DIR/include \
-	VORBISENC_LIBS=$PREFIX_DIR/lib \
-	SQLITE3_CFLAGS=$PREFIX_DIR/include \
-	SQLITE3_LIBS=$PREFIX_DIR/lib
+	FLAC_CFLAGS=$CPPFLAGS \
+	FLAC_LIBS="$LDFLAGS -lFLAC" \
+	OGG_CFLAGS=$CPPFLAGS \
+	OGG_LIBS="$LDFLAGS -logg" \
+	SPEEX_CFLAGS=$CPPFLAGS \
+	SPEEX_LIBS="$LDFLAGS -lspeex" \
+	VORBIS_CFLAGS=$CPPFLAGS \
+	VORBIS_LIBS="$LDFLAGS -lvorbis" \
+	VORBISENC_CFLAGS=$CPPFLAGS \
+	VORBISENC_LIBS="$LDFLAGS -lvorbisenc" \
+	SQLITE3_CFLAGS=$CPPFLAGS \
+	SQLITE3_LIBS="$LDFLAGS -lsqlite3"
 make -j $PROCESSOR
 make install
 ldconfig

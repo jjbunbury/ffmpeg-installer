@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package

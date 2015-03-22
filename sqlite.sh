@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -109,9 +109,6 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
-if [[ $_OSARCH == yum ]];then
-	yum -y install cairo cairo-devel gavl gavl-devel
-fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
@@ -120,9 +117,12 @@ tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
+	--enable-readline \
+	--enable-threadsafe \
+	--enable-dynamic-extensions \
 	--enable-static \
-	--disable-shared \
-	--disable-fast-install \
+	--enable-shared \
+	--enable-fast-install \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS
 make -j $PROCESSOR

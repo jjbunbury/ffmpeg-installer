@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -118,7 +118,7 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-chmod +x ./configure && ./configure --prefix=$PREFIX_DIR --disable-fast-install --without-speex --without-kate --enable-shared
+chmod +x ./configure && ./configure --prefix=$PREFIX_DIR --enable-fast-install --without-speex --without-kate --enable-shared
 make -j $PROCESSOR
 make install
 ldconfig

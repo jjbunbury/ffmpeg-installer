@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -123,12 +123,14 @@ chmod +x ./configure && ./configure \
 	--enable-mp3rtp \
 	--enable-nasm \
 	--enable-static \
-	--disable-shared \
+	--enable-shared \
+	--enable-fast-install \
 	--disable-rpath \
 	--disable-mp3x \
-	--disable-fast-install \
 	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS
+	CPPFLAGS=$CPPFLAGS \
+	SNDFILE_CFLAGS=$CPPFLAGS \
+	SNDFILE_LIBS="$LDFLAGS -lsndfile"
 make -j $PROCESSOR
 make install
 ldconfig

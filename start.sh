@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -120,7 +120,7 @@ if [[ $_OSARCH == yum ]];then
 	yum install autoconf automake epel-release expat expat-devel fontconfig fontconfig-devel freetype freetype-devel \
 	gcc gcc-c++ gd gd-devel gettext gettext-devel giflib giflib-devel ImageMagick ImageMagick-devel \
 	libgcc libjpeg-turbo libjpeg-turbo-devel libpng libpng-devel libstdc++ libstdc++-devel libtiff libtiff-devel \
-	libtool libxml libxml-devel libxml2 libxml2-devel make neon neon-devel patch samba-common zlib zlib-devel \
+	libtool libxml libxml-devel libxml2 libxml2-devel make neon neon-devel patch python python-devel samba-common zlib zlib-devel \
 	bison bison-devel bzip2 bzip2-devel \
 	openssl-devel subversion SDL-devel gnutls gnutls-devel -y
 	export ARCH=$(arch)
@@ -140,8 +140,6 @@ fi
 #######################################################################
 # nasm
 #######################################################################
-# requires: CCACHE
-# status: Validated
 sh nasm.sh
 if [ -e $PREFIX_DIR/bin/nasm ]; then
         echo " "
@@ -157,8 +155,6 @@ fi
 #######################################################################
 # yasm
 #######################################################################
-# requires: libintl, libiconv, Cython (optional), python (optional), python-devel (optional)
-# status: Validated
 sh yasm.sh
 if [ -e $PREFIX_DIR/bin/yasm ]; then
         echo " "
@@ -171,9 +167,11 @@ else
         exit
 fi
 
-#sqlite
+#######################################################################
+# sqlite
+#######################################################################
 sh sqlite.sh
-if [[ -e $PREFIX_DIR/lib/libsqlite3.so || -e $PREFIX_DIR/lib/libsqlite3.a ]]; then
+if [ -e $PREFIX_DIR/bin/sqlite3 ]; then
         echo " "
 else
         echo " "
@@ -185,81 +183,162 @@ else
 fi
 
 #######################################################################
-# deprecated 
-#######################################################################
-#avisynth
-#libaacplus
-#libbluray
-#libbs2b
-#libcaca
-#libcelt
-#libcdio
-#libdc1394
-#libfaac
-#libflite
-#libgme
-#libgsm
-#libiec61883
-#libnut
-#libpulse
-#libschroedinger
-#libshine
-#libsmbclient
-#libsoxr
-#libstagefright-h264
-#libutvideo
-#libv4l2
-#libvidstab
-#libwavpack
-#libxavs
-#libxcb
-#libxcb-shm
-#libxcb-xfixes
-#libxcb-shape
-
-#libzmq \
-#libzvbi \
-#decklink \
-#openal \
-#opencl \
-#opengl \
-#openssl
-#x11grab
-#######################################################################
-# uses package manager dependency
-#######################################################################
-
-#fontconfig
-#gnutls
-#ladspa
-#libass
-#libfribidi
-#libopencv
-#libopenjpeg
-
-#######################################################################
-# dependency 
-#######################################################################
-
-#######################################################################
 # encoders
 #######################################################################
 
-#frei0r
-#requires: OPENCV, GAVL, CAIRO
-# status: Validated
+#######################################################################
+# frei0r
+#######################################################################
 sh frei0r.sh
+if [ -d $PREFIX_DIR/lib/frei0r-1 ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"frei0r installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libfdk-aac
+#######################################################################
+# libfdk-aac
+#######################################################################
 sh libfdk-aac.sh
-#libilbc
+if [ -e $PREFIX_DIR/lib/libfdk-aac.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"frei0r installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libilbc
+#######################################################################
 sh libilbc.sh
+if [ -e $PREFIX_DIR/lib/libilbc.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libilbc installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libmodplug
+#######################################################################
+# libmodplug
+#######################################################################
 sh libmodplug.sh
+if [ -e $PREFIX_DIR/lib/libmodplug.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libmodplug installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libmp3lame
-# status: Validated
+#######################################################################
+# libogg
+#######################################################################
+sh libogg.sh
+if [ -e $PREFIX_DIR/lib/libogg.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libogg installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libflac
+#######################################################################
+sh libflac.sh
+if [ -e $PREFIX_DIR/lib/libFLAC.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libflac installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libvorbis
+#######################################################################
+sh libvorbis.sh
+if [ -e $PREFIX_DIR/lib/libvorbis.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libvorbis installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# speexdsp
+#######################################################################
+sh speexdsp.sh
+if [ -e $PREFIX_DIR/lib/libspeexdsp.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libspeexdsp installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libspeex
+#######################################################################
+sh libspeex.sh
+if [ -e $PREFIX_DIR/lib/libspeex.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libspeex installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libsndfile
+#######################################################################
+sh libsndfile.sh
+if [ -e $PREFIX_DIR/lib/libsndfile.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libsndfile installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libmp3lame
+#######################################################################
 sh libmp3lame.sh
 if [ -e $PREFIX_DIR/bin/lame ]; then
         echo " "
@@ -291,42 +370,7 @@ sh libquvi.sh
 sh quvi.sh
 
 #librtmp
-#libspeex
 #libssh
-
-#libogg
-# status: Validated
-sh libogg.sh
-if [ -e $PREFIX_DIR/lib/libogg.so ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"libogg installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
-
-#libflac
-# OGG, LIBICONV, XMMS (optional)
-# status: Validated
-sh libflac.sh
-
-#libvorbis
-#requires: OGG
-# status: Validated
-sh libvorbis.sh
-if [ -e $PREFIX_DIR/lib/libvorbis.so ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"libvorbis installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
 
 #vorbistools
 #requires: OGG, VORBIS, CURL, AO, KATE, FLAC, SPEEX
@@ -345,9 +389,6 @@ else
         echo " "
         exit
 fi
-
-#libsndfile
-#requires: FLAC, OGG, SPEEX, VORBIS, VORBISENC, SQLITE3
 
 #libtwolame
 #requires: libsndfile

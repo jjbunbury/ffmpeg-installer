@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -116,11 +116,14 @@ wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
-	--prefix=$PREFIX_DIR
-	--enable-stack-smash-protection
-	--enable-static
-	--disable-shared
-	--disable-fast-install \
+	--prefix=$PREFIX_DIR \
+	--enable-stack-smash-protection \
+	--enable-static \
+	--enable-shared \
+	--enable-fast-install \
+	--with-ogg=$PREFIX_DIR \
+	--with-ogg-libraries=$PREFIX_DIR/lib \
+	--with-ogg-includes=$PREFIX_DIR/include \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS
 make -j $PROCESSOR

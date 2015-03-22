@@ -41,7 +41,7 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
-export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor"|wc -l`
+export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 #######################################################################
 # package
@@ -115,7 +115,13 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-chmod +x ./configure && ./configure --prefix=$PREFIX_DIR
+chmod +x ./configure && ./configure \
+	--prefix=$PREFIX_DIR \
+	--enable-static \
+	--enable-shared \
+	--enable-fast-install \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS
 make -j $PROCESSOR
 make install
 echo -e $RED"Installation of $package ....... Completed"$RESET
