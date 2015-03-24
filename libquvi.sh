@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -46,13 +46,13 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
-export libquvi_scripts_CFLAGS=$PREFIX_DIR/include
-export libquvi_scripts_LIBS=$PREFIX_DIR/lib
+#export libquvi_scripts_CFLAGS=$PREFIX_DIR/include
+#export libquvi_scripts_LIBS=$PREFIX_DIR/lib
 #######################################################################
 # package
 #######################################################################
 package='libquvi'
-version='0.9.4'
+version='0.4.1'
 extension='tar.xz'
 #######################################################################
 # Detect platform
@@ -129,7 +129,7 @@ chmod +x ./configure && ./configure \
 	--enable-static \
 	--enable-shared \
 	--enable-fast-install \
-	--with-scriptsdir=$PREFIX_DIR/share/libquvi-scripts/0.9
+	--with-scriptsdir=$PREFIX_DIR/share/libquvi-scripts
 make -j $PROCESSOR
 make install
 ldconfig

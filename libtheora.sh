@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -46,12 +46,18 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
+export OGG_CFLAGS=$CPPFLAGS
+export OGG_LIBS="$LDFLAGS -logg"
+export VORBIS_CFLAGS=$CPPFLAGS
+export VORBIS_LIBS="$LDFLAGS -lvorbis"
+export PNG_CFLAGS=$CPPFLAGS
+export PNG_LIBS="$LDFLAGS -lpng"
 #######################################################################
 # package
 #######################################################################
 package='libtheora'
 version='1.1.1'
-extension='tar.gz'
+extension='tar.bz2'
 #######################################################################
 # Detect platform
 #######################################################################
@@ -125,7 +131,14 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-shared \
 	--enable-static \
-	--enable-fast-install
+	--enable-fast-install \
+	--disable-examples \
+	--with-ogg=$PREFIX_DIR \
+	--with-ogg-libraries=$PREFIX_DIR/lib \
+	--with-ogg-includes=$PREFIX_DIR/include \
+	--with-vorbis=$PREFIX_DIR \
+	--with-vorbis-libraries=$PREFIX_DIR/lib \
+	--with-vorbis-includes=$PREFIX_DIR/include
 make -j $PROCESSOR
 make install
 ldconfig

@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
+SOURCE_DOWNLOAD_URL='git://git.videolan.org/x264.git'
 #######################################################################
 # install
 #######################################################################
@@ -49,9 +49,9 @@ export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
-extension='tar.gz'
+package='libx264'
+version=''
+extension=''
 #######################################################################
 # Detect platform
 #######################################################################
@@ -112,19 +112,20 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install cairo cairo-devel gavl gavl-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
-wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
-tar $command $package-$version.$extension
-cd $package-$version
+git clone $SOURCE_DOWNLOAD_URL $package
+cd $package
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
+	--extra-cflags=$CPPFLAGS \
+	--extra-ldflags=$LDFLAGS \
 	--enable-static \
-	--enable-shared \
-	--enable-fast-install \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-shared
 make -j $PROCESSOR
 make install
 ldconfig

@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='https://www.ffmpeg.org/releases'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -46,6 +46,11 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
+
+export LD_LIBRARY_PATH=$PREFIX_DIR/lib:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$PREFIX_DIR/lib:/usr/lib:/usr/local/lib:$LIBRARY_PATH
+export CPATH=$PREFIX_DIR/include:/usr/include/:usr/local/include:$CPATH
+
 #######################################################################
 # package
 #######################################################################
@@ -140,6 +145,9 @@ chmod +x ./configure
 
 ./configure \
 	--prefix=$PREFIX_DIR \
+	--extra-cflags=$CPPFLAGS \
+	--extra-ldflags=$LDFLAGS \
+	--pkg-config=pkg-config \
 	--optflags='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic' \
 	--enable-pthreads \
 	--enable-gpl \

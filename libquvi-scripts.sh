@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -46,11 +46,13 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
+export libquvi_CFLAGS=$CPPFLAGS
+export libquvi_LIBS="$LDFLAGS -lquvi"
 #######################################################################
 # package
 #######################################################################
 package='libquvi-scripts'
-version='0.9.20131130'
+version='0.4.21'
 extension='tar.xz'
 #######################################################################
 # Detect platform

@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -118,7 +118,13 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package-$version
-chmod +x ./configure && ./configure --prefix=$PREFIX_DIR --enable-shared --enable-fast-install --disable-armv5e --disable-armv7neon
+chmod +x ./configure && ./configure \
+	--prefix=$PREFIX_DIR \
+	--enable-static \
+	--enable-shared \
+	--enable-fast-install \
+	--disable-armv5e \
+	--disable-armv7neon
 make -j $PROCESSOR
 make install
 ldconfig

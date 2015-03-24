@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL=''
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local'
+PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
@@ -388,6 +388,21 @@ fi
 #######################################################################
 # libsndfile
 #######################################################################
+sh libtheora.sh
+if [ -e $PREFIX_DIR/lib/libtheora.so ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libtheora installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libsndfile
+#######################################################################
 sh libsndfile.sh
 if [ -e $PREFIX_DIR/lib/libsndfile.so ]; then
         echo " "
@@ -445,54 +460,140 @@ else
         exit
 fi
 
-#libquvi-scripts
-#requires: libquvi
+#######################################################################
+# libquvi-scripts
+#######################################################################
 sh libquvi-scripts.sh
-
-#libquvi
-#requires: libquvi_scripts, glib, libcurl, libproxy, liblua
-sh libquvi.sh
-
-#quvi
-# libquvi, libcurl, gobject, glib, json_glib, libxml
-sh quvi.sh
-
-#librtmp
-#libssh
-
-#libtheora
-#requires: OGG, VORBIS, PNG, CAIRO
-sh libtheora.sh
-if [ -e $PREFIX_DIR/lib/libtheora.so ]; then
+if [ -d $PREFIX_DIR/share/libquvi-scripts ]; then
         echo " "
 else
         echo " "
         echo " "
-        echo -e $RED"libtheora installation failed"$RESET
+        echo -e $RED"libquvi-scripts installation failed"$RESET
         echo " "
         echo " "
         exit
 fi
 
-#libtwolame
-#requires: libsndfile
-sh libtwolame.sh
+#######################################################################
+# libquvi
+#######################################################################
+sh libquvi.sh
+if [[ -e $PREFIX_DIR/lib/libquvi.so || -e $PREFIX_DIR/lib/libquvi.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libquvi installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libvo-aacenc
+#######################################################################
+# quvi
+#######################################################################
+sh quvi.sh
+if [ -e $PREFIX_DIR/bin/quvi ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"quvi installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#librtmp
+
+#######################################################################
+# libtwolame
+#######################################################################
+sh libtwolame.sh
+if [[ -e $PREFIX_DIR/lib/libtwolame.so || -e $PREFIX_DIR/lib/libtwolame.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libtwolame installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libvo-aacenc
+#######################################################################
 sh vo-aacenc.sh
+if [[ -e $PREFIX_DIR/lib/libvo-aacenc.so || -e $PREFIX_DIR/lib/libvo-aacenc.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libvo-aacenc installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
 #libvo-amrwbenc
 sh vo-amrwbenc.sh
+if [[ -e $PREFIX_DIR/lib/libvo-amrwbenc.so || -e $PREFIX_DIR/lib/libvo-amrwbenc.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libvo-amrwbenc installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
 #libvpx
+sh libvpx.sh
+if [[ -e $PREFIX_DIR/lib/libvpx.so || -e $PREFIX_DIR/lib/libvpx.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libvpx installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
 #libwebp
+#sh libwebp.sh
+
 #libx264
-#sh libx264.sh
+sh libx264.sh
+if [[ -e $PREFIX_DIR/lib/libx264.so || -e $PREFIX_DIR/lib/libx264.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libx264 installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
 #libx265
-#sh libx265.sh
+sh libx265.sh
+if [[ -e $PREFIX_DIR/lib/libx265.so || -e $PREFIX_DIR/lib/libx265.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libx265 installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
 #libxvid
-
+#sh libxvid.sh
 #######################################################################
 # end
 #######################################################################

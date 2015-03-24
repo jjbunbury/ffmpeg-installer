@@ -49,8 +49,8 @@ export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
+package='libvpx'
+version='1.3.0'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -112,6 +112,9 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install cairo cairo-devel gavl gavl-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
@@ -122,9 +125,14 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-vp8 \
+	--enable-vp9 \
+	--enable-postproc \
+	--enable-vp9-postproc \
+	--enable-runtime-cpu-detect \
+	--enable-postproc-visualizer \
+	--enable-multi-res-encoding \
+	--disable-examples
 make -j $PROCESSOR
 make install
 ldconfig
