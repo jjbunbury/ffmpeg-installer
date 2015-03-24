@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/vorbis'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,11 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
+export OGG_CFLAGS=$CPPFLAGS
+export OGG_LIBS="$LDFLAGS -logg"
 #######################################################################
 # package
 #######################################################################
@@ -123,10 +128,6 @@ chmod +x ./configure && ./configure \
 	--with-ogg=$PREFIX_DIR \
 	--with-ogg-libraries=$PREFIX_DIR/lib
 	--with-ogg-includes=$PREFIX_DIR/include
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
-	OGG_CFLAGS=$PREFIX_DIR/include \
-	OGG_LIBS=$PREFIX_DIR/lib
 make -j $PROCESSOR
 make install
 ldconfig

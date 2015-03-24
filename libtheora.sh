@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://downloads.xiph.org/releases/theora'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,9 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -122,9 +125,7 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-shared \
 	--enable-static \
-	--enable-fast-install \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS
+	--enable-fast-install
 make -j $PROCESSOR
 make install
 ldconfig

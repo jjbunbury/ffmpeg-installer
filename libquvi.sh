@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libquvi'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,11 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
+export libquvi_scripts_CFLAGS=$PREFIX_DIR/include
+export libquvi_scripts_LIBS=$PREFIX_DIR/lib
 #######################################################################
 # package
 #######################################################################
@@ -124,11 +129,7 @@ chmod +x ./configure && ./configure \
 	--enable-static \
 	--enable-shared \
 	--enable-fast-install \
-	--with-scriptsdir=$PREFIX_DIR/share/libquvi-scripts/0.9 \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
-	libquvi_scripts_CFLAGS=$PREFIX_DIR/include \
-	libquvi_scripts_LIBS=$PREFIX_DIR/lib
+	--with-scriptsdir=$PREFIX_DIR/share/libquvi-scripts/0.9
 make -j $PROCESSOR
 make install
 ldconfig

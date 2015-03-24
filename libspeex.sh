@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/speex'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,13 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
+export SPEEXDSP_LIBS="$LDFLAGS -lspeexdsp"
+export SPEEXDSP_CFLAGS=$CPPFLAGS
+export OGG_LIBS="$LDFLAGS -logg"
+export OGG_CFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -119,13 +126,7 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
-	SPEEXDSP_LIBS="$LDFLAGS -lspeexdsp" \
-	SPEEXDSP_CFLAGS=$CPPFLAGS \
-	OGG_LIBS="$LDFLAGS -logg" \
-	OGG_CFLAGS=$CPPFLAGS \
+	--enable-fast-install
 
 make -j $PROCESSOR
 make install

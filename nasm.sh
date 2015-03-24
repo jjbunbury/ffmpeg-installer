@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/nasm'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,9 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -120,9 +123,7 @@ tar $command $package-$version.$extension
 cd $package-$version
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
-	--with-ccache \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS
+	--with-ccache
 make -j $PROCESSOR
 make install
 ldconfig

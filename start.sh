@@ -43,6 +43,9 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -135,6 +138,21 @@ if [ -e "/etc/debianversion" ];then
 	apt-get install gcc libgd-dev gettext libpng-dev libstdc++-dev \
 		libtiff-dev libtool libxml2 libxml2-dev automake autoconf libncurses-dev ncurses-dev patch \
 		make git subversion -y
+fi
+
+#######################################################################
+# libpng
+#######################################################################
+sh libpng.sh
+if [[ -e $PREFIX_DIR/lib/libpng.so || -e $PREFIX_DIR/lib/libpng.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libpng installation failed"$RESET
+        echo " "
+        echo " "
+        exit
 fi
 
 #######################################################################
@@ -322,6 +340,52 @@ else
 fi
 
 #######################################################################
+# libkate
+#######################################################################
+sh libkate.sh
+if [[ -e $PREFIX_DIR/lib/libkate.so || -e $PREFIX_DIR/lib/libkate.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libkate installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libao
+# @todo implement other libao methods in update
+#######################################################################
+sh libao.sh
+if [[ -e $PREFIX_DIR/lib/libao.so || -e $PREFIX_DIR/lib/libao.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libao installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# vorbis-tools
+#######################################################################
+sh vorbistools.sh
+if [ -e $PREFIX_DIR/bin/vorbiscomment ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libao installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
 # libsndfile
 #######################################################################
 sh libsndfile.sh
@@ -351,11 +415,35 @@ else
         exit
 fi
 
-#libopencore-amr
+#######################################################################
+# libopencore-amr
+#######################################################################
 sh libopencore-amr.sh
+if [[ -e $PREFIX_DIR/lib/libopencore-amrnb.so && -e $PREFIX_DIR/lib/libopencore-amrwb.so ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libopencore-amr installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libopus
+#######################################################################
+# libopus
+#######################################################################
 sh libopus.sh
+if [[ -e $PREFIX_DIR/lib/libopus.so || -e $PREFIX_DIR/lib/libopus.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libopus installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
 #libquvi-scripts
 #requires: libquvi
@@ -371,10 +459,6 @@ sh quvi.sh
 
 #librtmp
 #libssh
-
-#vorbistools
-#requires: OGG, VORBIS, CURL, AO, KATE, FLAC, SPEEX
-sh vorbistools.sh
 
 #libtheora
 #requires: OGG, VORBIS, PNG, CAIRO

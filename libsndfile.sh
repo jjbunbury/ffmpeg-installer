@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/libsndfile'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
 #######################################################################
 # install
 #######################################################################
@@ -43,6 +43,21 @@ LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
+export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
+export FLAC_CFLAGS=$CPPFLAGS
+export FLAC_LIBS="$LDFLAGS -lFLAC"
+export OGG_CFLAGS=$CPPFLAGS
+export OGG_LIBS="$LDFLAGS -logg"
+export SPEEX_CFLAGS=$CPPFLAGS
+export SPEEX_LIBS="$LDFLAGS -lspeex"
+export VORBIS_CFLAGS=$CPPFLAGS
+export VORBIS_LIBS="$LDFLAGS -lvorbis"
+export VORBISENC_CFLAGS=$CPPFLAGS
+export VORBISENC_LIBS="$LDFLAGS -lvorbisenc"
+export SQLITE3_CFLAGS=$CPPFLAGS
+export SQLITE3_LIBS="$LDFLAGS -lsqlite3"
 #######################################################################
 # package
 #######################################################################
@@ -123,21 +138,7 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
-	FLAC_CFLAGS=$CPPFLAGS \
-	FLAC_LIBS="$LDFLAGS -lFLAC" \
-	OGG_CFLAGS=$CPPFLAGS \
-	OGG_LIBS="$LDFLAGS -logg" \
-	SPEEX_CFLAGS=$CPPFLAGS \
-	SPEEX_LIBS="$LDFLAGS -lspeex" \
-	VORBIS_CFLAGS=$CPPFLAGS \
-	VORBIS_LIBS="$LDFLAGS -lvorbis" \
-	VORBISENC_CFLAGS=$CPPFLAGS \
-	VORBISENC_LIBS="$LDFLAGS -lvorbisenc" \
-	SQLITE3_CFLAGS=$CPPFLAGS \
-	SQLITE3_LIBS="$LDFLAGS -lsqlite3"
+	--enable-fast-install
 make -j $PROCESSOR
 make install
 ldconfig

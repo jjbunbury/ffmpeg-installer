@@ -46,12 +46,16 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
+export OGG_CFLAGS=$CPPFLAGS
+export OGG_LIBS="$LDFLAGS -logg"
+export PNG_CFLAGS=$CPPFLAGS
+export PNG_LIBS="$LDFLAGS -lpng"
 #######################################################################
 # package
 #######################################################################
-package='libquvi-scripts'
-version='0.9.20131130'
-extension='tar.xz'
+package='libkate'
+version='0.4.1'
+extension='tar.gz'
 #######################################################################
 # Detect platform
 #######################################################################
@@ -112,6 +116,9 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install cairo cairo-devel gavl gavl-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
