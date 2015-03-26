@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/files'
 #######################################################################
 # install
 #######################################################################
@@ -44,8 +44,8 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 export FLAC_CFLAGS=$CPPFLAGS
 export FLAC_LIBS="$LDFLAGS -lFLAC"
 export OGG_CFLAGS=$CPPFLAGS
@@ -130,9 +130,9 @@ fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
-wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
+wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
-cd $package-$version
+cd $package*
 
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \

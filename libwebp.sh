@@ -49,8 +49,8 @@ export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
+package='libwebp'
+version='0.4.3'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -112,6 +112,10 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
+if [[ $_OSARCH == yum ]];then
+	yum -y install libtiff libtiff-devel libtiff-static libpng libpng-devel libpng-static \
+	libjpeg-turbo libjpeg-turbo-devel libjpeg-turbo-static giflib giflib-devel
+fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
@@ -123,8 +127,10 @@ chmod +x ./configure && ./configure \
 	--enable-static \
 	--enable-shared \
 	--enable-fast-install \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-libwebpmux \
+	--enable-libwebpdemux \
+	--enable-libwebpdecoder
+
 make -j $PROCESSOR
 make install
 ldconfig

@@ -44,8 +44,8 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -115,13 +115,17 @@ echo -e $RED"Installation of $package ....... started"$RESET
 if [[ $_OSARCH == yum ]];then
 	yum -y install cairo cairo-devel gavl gavl-devel
 fi
-cd $SOURCE_DIR
-echo -e $RED"removing old installation of $package"$RESET
-rm --recursive --force --verbose $package*
-hg clone $SOURCE_DOWNLOAD_URL $package
-cd $package
-cmake -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR -G "Unix Makefiles" $SOURCE_DIR/$package/source
-make -j $PROCESSOR
-make install
-ldconfig
-echo -e $RED"Installation of $package ....... Completed"$RESET
+if [[ -e $PREFIX_DIR/bin/hg && $PREFIX_DIR/bin/cmake ]]; then
+	cd $SOURCE_DIR
+	echo -e $RED"removing old installation of $package"$RESET
+	rm --recursive --force --verbose $package*
+	hg clone $SOURCE_DOWNLOAD_URL $package
+	cd $package
+	cmake -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR -G "Unix Makefiles" $SOURCE_DIR/$package/source
+	make -j $PROCESSOR
+	make install
+	ldconfig
+	echo -e $RED"Installation of $package ....... Completed"$RESET
+else
+	exit
+fi

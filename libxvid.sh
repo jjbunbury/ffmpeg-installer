@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/files'
 #######################################################################
 # install
 #######################################################################
@@ -44,13 +44,13 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
-package='libpng'
-version='1.6.16'
+package='xvidcore'
+version='1.3.3'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -118,17 +118,10 @@ fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
-wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
+wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
-cd $package-$version
-chmod +x ./configure && ./configure \
-	--prefix=$PREFIX_DIR \
-	--enable-static \
-	--enable-shared \
-	--enable-fast-install \
-	--enable-unversioned-links \
-	--enable-unversioned-libpng-pc \
-	--enable-unversioned-libpng-config
+cd $package
+chmod +x ./build/generic/configure && ./build/generic/configure --prefix=$PREFIX_DIR
 make -j $PROCESSOR
 make install
 ldconfig

@@ -28,7 +28,7 @@ RESET='\033[0m'
 # source
 #######################################################################
 SOURCE_DIR='/usr/local/src'
-SOURCE_DOWNLOAD_URL='https://www.ffmpeg.org/releases'
+SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/files'
 #######################################################################
 # install
 #######################################################################
@@ -44,19 +44,19 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:/usr/lib:/usr/local/lib:$LIBRARY_PATH
-export CPATH=$PREFIX_DIR/include:/usr/include/:usr/local/include:$CPATH
+#export LD_LIBRARY_PATH=$PREFIX_DIR/lib:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
+#export LIBRARY_PATH=$PREFIX_DIR/lib:/usr/lib:/usr/local/lib:$LIBRARY_PATH
+#export CPATH=$PREFIX_DIR/include:/usr/include/:usr/local/include:$CPATH
 
 #######################################################################
 # package
 #######################################################################
 package='ffmpeg'
-version='2.5.4'
-extension='tar.gz'
+version='2.6.1'
+extension='tar.bz2'
 #######################################################################
 # Detect platform
 #######################################################################
@@ -128,9 +128,9 @@ fi
 cd $SOURCE_DIR
 echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
-wget --content-disposition $SOURCE_DOWNLOAD_URL/$package-$version.$extension
+wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
-cd $package-$version
+cd $package*
 chmod +x ./configure
 
 #	--extra-cflags=-I/usr/include \
@@ -142,13 +142,15 @@ chmod +x ./configure
 #	--incdir=/usr/include/ffmpeg \
 #	--libdir=/usr/lib64 \
 #	--mandir=/usr/share/man \
+#--optflags='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic' \
 
 ./configure \
 	--prefix=$PREFIX_DIR \
+	--disable-static \
+	--enable-shared \
 	--extra-cflags=$CPPFLAGS \
 	--extra-ldflags=$LDFLAGS \
 	--pkg-config=pkg-config \
-	--optflags='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic' \
 	--enable-pthreads \
 	--enable-gpl \
 	--enable-version3 \

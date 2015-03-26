@@ -44,8 +44,8 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################

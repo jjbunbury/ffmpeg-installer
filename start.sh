@@ -44,8 +44,8 @@ LDFLAGS=-L$PREFIX_DIR/lib
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
+#export LDFLAGS=$LDFLAGS
+#export CPPFLAGS=$CPPFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -124,6 +124,7 @@ if [[ $_OSARCH == yum ]];then
 	gcc gcc-c++ gd gd-devel gettext gettext-devel giflib giflib-devel ImageMagick ImageMagick-devel \
 	libgcc libjpeg-turbo libjpeg-turbo-devel libpng libpng-devel libstdc++ libstdc++-devel libtiff libtiff-devel \
 	libtool libxml libxml-devel libxml2 libxml2-devel make neon neon-devel patch python python-devel samba-common zlib zlib-devel \
+	
 	bison bison-devel bzip2 bzip2-devel \
 	openssl-devel subversion SDL-devel gnutls gnutls-devel -y
 	export ARCH=$(arch)
@@ -138,21 +139,6 @@ if [ -e "/etc/debianversion" ];then
 	apt-get install gcc libgd-dev gettext libpng-dev libstdc++-dev \
 		libtiff-dev libtool libxml2 libxml2-dev automake autoconf libncurses-dev ncurses-dev patch \
 		make git subversion -y
-fi
-
-#######################################################################
-# libpng
-#######################################################################
-sh libpng.sh
-if [[ -e $PREFIX_DIR/lib/libpng.so || -e $PREFIX_DIR/lib/libpng.a ]]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"libpng installation failed"$RESET
-        echo " "
-        echo " "
-        exit
 fi
 
 #######################################################################
@@ -537,7 +523,9 @@ else
         exit
 fi
 
-#libvo-amrwbenc
+#######################################################################
+# libvo-amrwbenc
+#######################################################################
 sh vo-amrwbenc.sh
 if [[ -e $PREFIX_DIR/lib/libvo-amrwbenc.so || -e $PREFIX_DIR/lib/libvo-amrwbenc.a ]]; then
         echo " "
@@ -550,7 +538,9 @@ else
         exit
 fi
 
-#libvpx
+#######################################################################
+# libvpx
+#######################################################################
 sh libvpx.sh
 if [[ -e $PREFIX_DIR/lib/libvpx.so || -e $PREFIX_DIR/lib/libvpx.a ]]; then
         echo " "
@@ -563,10 +553,24 @@ else
         exit
 fi
 
-#libwebp
-#sh libwebp.sh
+#######################################################################
+# libwebp
+#######################################################################
+sh libwebp.sh
+if [[ -e $PREFIX_DIR/lib/libwebp.so || -e $PREFIX_DIR/lib/libwebp.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libwebp installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
-#libx264
+#######################################################################
+# libx264
+#######################################################################
 sh libx264.sh
 if [[ -e $PREFIX_DIR/lib/libx264.so || -e $PREFIX_DIR/lib/libx264.a ]]; then
         echo " "
@@ -579,7 +583,9 @@ else
         exit
 fi
 
-#libx265
+#######################################################################
+# libx265
+#######################################################################
 sh libx265.sh
 if [[ -e $PREFIX_DIR/lib/libx265.so || -e $PREFIX_DIR/lib/libx265.a ]]; then
         echo " "
@@ -592,8 +598,21 @@ else
         exit
 fi
 
-#libxvid
-#sh libxvid.sh
+#######################################################################
+# libxvid
+#######################################################################
+sh libxvid.sh
+if [[ -e $PREFIX_DIR/lib/libxvidcore.so || -e $PREFIX_DIR/lib/libxvidcore.a ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libxvidcore installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
 #######################################################################
 # end
 #######################################################################
@@ -621,4 +640,4 @@ fi
 #######################################################################
 # post
 #######################################################################
-#sh post.sh
+sh post.sh
