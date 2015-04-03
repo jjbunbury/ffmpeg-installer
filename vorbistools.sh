@@ -36,16 +36,27 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
+export OGG_CFLAGS=$EXTRA_CFLAGS
+export OGG_LIBS="$EXTRA_LDFLAGS -logg"
+export VORBIS_CFLAGS=$EXTRA_CFLAGS
+export VORBIS_LIBS="$EXTRA_LDFLAGS -lvorbis"
+#export CURL_CFLAGS=$EXTRA_CFLAGS
+#export CURL_LIBS="$EXTRA_LDFLAGS -lcurl"
+export AO_CFLAGS=$EXTRA_CFLAGS
+export AO_LIBS="$EXTRA_LDFLAGS -lao"
+export KATE_CFLAGS=$EXTRA_CFLAGS
+export KATE_LIBS="$EXTRA_LDFLAGS -lkate"
+
 #######################################################################
 # package
 #######################################################################
@@ -121,11 +132,27 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package*
+
+#  --with-libpth-prefix$PREFIX_DIR \
+#  --with-libiconv-prefix=$PREFIX_DIR \
+#  --with-included-gettext=$PREFIX_DIR/include \
+#  --with-libintl-prefix=$PREFIX_DIR \
+
+#	--with-curl=$PREFIX_DIR \
+#	--with-curl-libraries=$PREFIX_DIR/lib \
+#	--with-curl-includes=$PREFIX_DIR/include \
+
 chmod +x ./configure && ./configure \
-	--prefix=$PREFIX_DIR
+	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install
+	--enable-fast-install \
+	--with-ogg=$PREFIX_DIR \
+	--with-ogg-libraries=$PREFIX_DIR/lib \
+	--with-ogg-includes=$PREFIX_DIR/include \
+	--with-vorbis=$PREFIX_DIR \
+	--with-vorbis-libraries=$PREFIX_DIR/lib \
+	--with-vorbis-includes=$PREFIX_DIR/include
 make -j $PROCESSOR
 make install
 ldconfig

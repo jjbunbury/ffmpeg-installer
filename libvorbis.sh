@@ -36,18 +36,18 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
-export OGG_CFLAGS=$CPPFLAGS
-export OGG_LIBS="$LDFLAGS -logg"
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
+export OGG_CFLAGS=$EXTRA_CFLAGS
+export OGG_LIBS="$EXTRA_LDFLAGS -logg"
 #######################################################################
 # package
 #######################################################################
@@ -126,7 +126,7 @@ chmod +x ./configure && ./configure \
 	--enable-shared \
 	--enable-fast-install \
 	--with-ogg=$PREFIX_DIR \
-	--with-ogg-libraries=$PREFIX_DIR/lib
+	--with-ogg-libraries=$PREFIX_DIR/lib \
 	--with-ogg-includes=$PREFIX_DIR/include
 make -j $PROCESSOR
 make install

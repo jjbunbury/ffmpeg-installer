@@ -36,16 +36,16 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -115,13 +115,13 @@ echo -e $RED"Installation of $package ....... started"$RESET
 if [[ $_OSARCH == yum ]];then
 	yum -y install cairo cairo-devel gavl gavl-devel
 fi
-if [[ -e $PREFIX_DIR/bin/hg && $PREFIX_DIR/bin/cmake ]]; then
+if [[ -e /usr/bin/hg && /usr/bin/cmake ]]; then
 	cd $SOURCE_DIR
 	echo -e $RED"removing old installation of $package"$RESET
 	rm --recursive --force --verbose $package*
 	hg clone $SOURCE_DOWNLOAD_URL $package
 	cd $package
-	cmake -DCMAKE_INSTALL_PREFIX=$PREFIX_DIR -G "Unix Makefiles" $SOURCE_DIR/$package/source
+	cmake -DCMAKE_INSTALL_PREFIX_DIR=$PREFIX_DIR -G "Unix Makefiles" $SOURCE_DIR/$package/source
 	make -j $PROCESSOR
 	make install
 	ldconfig

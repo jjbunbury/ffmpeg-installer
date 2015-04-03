@@ -36,16 +36,16 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -119,12 +119,12 @@ if [ -e $PREFIX_DIR/bin/git ]; then
 	cd $SOURCE_DIR
 	echo -e $RED"removing old installation of $package"$RESET
 	rm --recursive --force --verbose $package*
-	git clone $SOURCE_DOWNLOAD_URL $package
+	$PREFIX_DIR/bin/git clone $SOURCE_DOWNLOAD_URL $package
 	cd $package
 	chmod +x ./configure && ./configure \
 		--prefix=$PREFIX_DIR \
-		--extra-cflags=$CPPFLAGS \
-		--extra-ldflags=$LDFLAGS \
+		--extra-cflags=$EXTRA_CFLAGS \
+		--extra-ldflags=$EXTRA_LDFLAGS \
 		--enable-static \
 		--enable-shared
 	make -j $PROCESSOR

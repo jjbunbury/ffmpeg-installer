@@ -46,14 +46,12 @@ export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=$EXTRA_LDFLAGS
 export CPPFLAGS=$EXTRA_CFLAGS
-export libquvi_CFLAGS=$EXTRA_CFLAGS
-export libquvi_LIBS="$EXTRA_LDFLAGS -lquvi"
 #######################################################################
 # package
 #######################################################################
-package='libquvi-scripts'
-version='0.4.21'
-extension='tar.xz'
+package='subversion'
+version=''
+extension=''
 #######################################################################
 # Detect platform
 #######################################################################
@@ -114,20 +112,10 @@ fi
 #######################################################################
 _detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
-cd $SOURCE_DIR
-echo -e $RED"removing old installation of $package"$RESET
-rm --recursive --force --verbose $package*
-wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
-tar $command $package-$version.$extension
-cd $package*
-chmod +x ./configure && ./configure \
-	--prefix=$PREFIX_DIR \
-	--enable-static \
-	--enable-shared \
-	--enable-fast-install \
-	--with-nsfw \
-	--without-manual
-make -j $PROCESSOR
-make install
-ldconfig
+if [[ $_OSARCH == yum ]];then
+	yum -y install subversion
+fi
+if [ -e "/usr/bin/svn" ]; then
+	ln -sf /usr/bin/svn $PREFIX_DIR/bin/svn
+fi
 echo -e $RED"Installation of $package ....... Completed"$RESET

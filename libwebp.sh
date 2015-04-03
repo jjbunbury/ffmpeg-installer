@@ -36,16 +36,16 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -129,7 +129,8 @@ chmod +x ./configure && ./configure \
 	--enable-fast-install \
 	--enable-libwebpmux \
 	--enable-libwebpdemux \
-	--enable-libwebpdecoder
+	--enable-libwebpdecoder \
+	--with-pkgconfigdir=$PREFIX_DIR/lib/pkgconfig
 
 make -j $PROCESSOR
 make install

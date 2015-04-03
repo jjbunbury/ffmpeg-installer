@@ -36,18 +36,20 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 #export libquvi_scripts_CFLAGS=$PREFIX_DIR/include
 #export libquvi_scripts_LIBS=$PREFIX_DIR/lib
+
+
 #######################################################################
 # package
 #######################################################################
@@ -128,8 +130,7 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	--with-scriptsdir=$PREFIX_DIR/share/libquvi-scripts
+	--enable-fast-install
 make -j $PROCESSOR
 make install
 ldconfig

@@ -36,22 +36,22 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
-export OGG_CFLAGS=$CPPFLAGS
-export OGG_LIBS="$LDFLAGS -logg"
-export VORBIS_CFLAGS=$CPPFLAGS
-export VORBIS_LIBS="$LDFLAGS -lvorbis"
-export PNG_CFLAGS=$CPPFLAGS
-export PNG_LIBS="$LDFLAGS -lpng"
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
+export OGG_CFLAGS=$EXTRA_CFLAGS
+export OGG_LIBS="$EXTRA_LDFLAGS -logg"
+export VORBIS_CFLAGS=$EXTRA_CFLAGS
+export VORBIS_LIBS="$EXTRA_LDFLAGS -lvorbis"
+#export PNG_CFLAGS=$EXTRA_CFLAGS
+#export PNG_LIBS="$EXTRA_LDFLAGS -lpng"
 #######################################################################
 # package
 #######################################################################
@@ -127,6 +127,10 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package*
+
+# --with-sdl-prefix=PFX
+# --with-sdl-exec-prefix=PFX
+
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-shared \

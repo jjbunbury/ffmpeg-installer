@@ -36,18 +36,18 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
-export SNDFILE_CFLAGS=$CPPFLAGS
-export SNDFILE_LIBS="$LDFLAGS -lsndfile"
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
+export SNDFILE_CFLAGS=$EXTRA_CFLAGS
+export SNDFILE_LIBS="$EXTRA_LDFLAGS -lsndfile"
 #######################################################################
 # package
 #######################################################################
@@ -123,15 +123,30 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package*
+
+#  --with-libiconv-prefix=$PREFIX_DIR \
+#  --with-gtk-prefix=$PREFIX_DIR \
+#  --with-gtk-exec-prefix=$PREFIX_DIR \
+
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
-	--enable-mp3rtp \
-	--enable-nasm \
-	--enable-static \
 	--enable-shared \
+	--enable-static \
 	--enable-fast-install \
+	--enable-nasm \
+	--enable-analyzer-hooks \
+	--enable-cpml \
+	--enable-decoder \
+	--enable-frontend \
+	--enable-mp3rtp \
 	--disable-rpath \
-	--disable-mp3x
+	--disable-gtktest \
+	--disable-efence \
+	--disable-mp3x \
+	--disable-dynamic-frontends \
+	--disable-expopt \
+	--disable-debug \
+	--with-fileio=lame
 make -j $PROCESSOR
 make install
 ldconfig

@@ -36,28 +36,28 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
-export FLAC_CFLAGS=$CPPFLAGS
-export FLAC_LIBS="$LDFLAGS -lFLAC"
-export OGG_CFLAGS=$CPPFLAGS
-export OGG_LIBS="$LDFLAGS -logg"
-export SPEEX_CFLAGS=$CPPFLAGS
-export SPEEX_LIBS="$LDFLAGS -lspeex"
-export VORBIS_CFLAGS=$CPPFLAGS
-export VORBIS_LIBS="$LDFLAGS -lvorbis"
-export VORBISENC_CFLAGS=$CPPFLAGS
-export VORBISENC_LIBS="$LDFLAGS -lvorbisenc"
-export SQLITE3_CFLAGS=$CPPFLAGS
-export SQLITE3_LIBS="$LDFLAGS -lsqlite3"
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
+export FLAC_CFLAGS=$EXTRA_CFLAGS
+export FLAC_LIBS="$EXTRA_LDFLAGS -lFLAC"
+export OGG_CFLAGS=$EXTRA_CFLAGS
+export OGG_LIBS="$EXTRA_LDFLAGS -logg"
+export SPEEX_CFLAGS=$EXTRA_CFLAGS
+export SPEEX_LIBS="$EXTRA_LDFLAGS -lspeex"
+export VORBIS_CFLAGS=$EXTRA_CFLAGS
+export VORBIS_LIBS="$EXTRA_LDFLAGS -lvorbis"
+export VORBISENC_CFLAGS=$EXTRA_CFLAGS
+export VORBISENC_LIBS="$EXTRA_LDFLAGS -lvorbisenc"
+export SQLITE3_CFLAGS=$EXTRA_CFLAGS
+export SQLITE3_LIBS="$EXTRA_LDFLAGS -lsqlite3"
 #######################################################################
 # package
 #######################################################################

@@ -36,16 +36,16 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 
 #export LD_LIBRARY_PATH=$PREFIX_DIR/lib:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH
 #export LIBRARY_PATH=$PREFIX_DIR/lib:/usr/lib:/usr/local/lib:$LIBRARY_PATH
@@ -146,10 +146,10 @@ chmod +x ./configure
 
 ./configure \
 	--prefix=$PREFIX_DIR \
-	--disable-static \
-	--enable-shared \
-	--extra-cflags=$CPPFLAGS \
-	--extra-ldflags=$LDFLAGS \
+	--enable-static \
+	--disable-shared \
+	--extra-cflags=$EXTRA_CFLAGS \
+	--extra-ldflags=$EXTRA_LDFLAGS \
 	--pkg-config=pkg-config \
 	--enable-pthreads \
 	--enable-gpl \
@@ -187,13 +187,13 @@ chmod +x ./configure
 	--enable-libopus \
 	--disable-libpulse \
 	--enable-libquvi \
-	--enable-librtmp \
+	--disable-librtmp \
 	--disable-libschroedinger \
 	--disable-libshine \
 	--disable-libsmbclient \
 	--disable-libsoxr \
 	--enable-libspeex \
-	--enable-libssh \
+	--disable-libssh \
 	--disable-libstagefright-h264 \
 	--enable-libtheora \
 	--enable-libtwolame \
@@ -231,6 +231,10 @@ chmod +x ./configure
 make -j $PROCESSOR
 make tools/qt-faststart
 make install
-cp -vf tools/qt-faststart /usr/bin
+cp -vf tools/qt-faststart $PREFIX_DIR/usr/bin
+ln -sf $PREFIX_DIR/bin/ffmpeg /usr/local/bin/ffmpeg
+ln -sf $PREFIX_DIR/bin/ffmpeg /usr/bin/ffmpeg
+ln -sf $PREFIX_DIR/bin/qt-faststart /usr/local/bin/qt-faststart
+ln -sf $PREFIX_DIR/bin/qt-faststart /usr/bin/qt-faststart
 ldconfig
 echo -e $RED"Installation of $package ....... Completed"$RESET

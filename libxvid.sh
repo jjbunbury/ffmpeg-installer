@@ -36,16 +36,16 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # flags
 #######################################################################
-CPPFLAGS=-I$PREFIX_DIR/include
-LDFLAGS=-L$PREFIX_DIR/lib
+EXTRA_CFLAGS=-I$PREFIX_DIR/include
+EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-#export LDFLAGS=$LDFLAGS
-#export CPPFLAGS=$CPPFLAGS
+export LDFLAGS=$EXTRA_LDFLAGS
+export CPPFLAGS=$EXTRA_CFLAGS
 #######################################################################
 # package
 #######################################################################
@@ -120,8 +120,12 @@ echo -e $RED"removing old installation of $package"$RESET
 rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
-cd $package
-chmod +x ./build/generic/configure && ./build/generic/configure --prefix=$PREFIX_DIR
+cd $package*
+if [ $PLATFORM == "Linux" ]; then
+	cd ./build/generic
+fi
+chmod +x ./configure && ./configure \
+	--prefix=$PREFIX_DIR
 make -j $PROCESSOR
 make install
 ldconfig
