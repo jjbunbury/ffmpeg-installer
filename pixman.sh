@@ -36,7 +36,8 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
+#export PATH=$PREFIX_DIR/bin:$PATH
+export PATH=$PATH:$PREFIX_DIR/bin
 export CPATH=$PREFIX_DIR/include:$CPATH
 export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
@@ -59,8 +60,8 @@ export CPPFLAGS=-I$INCLUDE_DIRECTORY
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
+package='pixman'
+version='0.32.6'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -89,14 +90,15 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package*
+autoreconf -fiv
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
 	--enable-fast-install \
-	--enable-compile-c \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-timers \
+	--enable-gtk \
+	--enable-libpng
 make -j $PROCESSOR
 make install
 ldconfig

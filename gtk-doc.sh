@@ -32,7 +32,7 @@ SOURCE_DOWNLOAD_URL='http://encoder.dazzlesoftware.org/files'
 #######################################################################
 # install
 #######################################################################
-PREFIX_DIR='/usr/local/encoder'
+PREFIX_DIR='/usr'
 #######################################################################
 # environment variables
 #######################################################################
@@ -59,9 +59,9 @@ export CPPFLAGS=-I$INCLUDE_DIRECTORY
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
-extension='tar.gz'
+package='gtk-doc'
+version='1.21'
+extension='tar.xz'
 #######################################################################
 # Detect platform
 #######################################################################
@@ -89,14 +89,12 @@ rm --recursive --force --verbose $package*
 wget --content-disposition $SOURCE_DOWNLOAD_URL/$package/$package-$version.$extension
 tar $command $package-$version.$extension
 cd $package*
+#autoreconf -fiv
 chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	--enable-compile-c \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-fast-install
 make -j $PROCESSOR
 make install
 ldconfig

@@ -49,6 +49,7 @@ LIBRARY_DIRECTORY=$PREFIX_DIR/lib
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
+export ARCHITECTURE=`arch`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
 export LDFLAGS=-L$LIBRARY_DIRECTORY
@@ -56,11 +57,15 @@ export CPPFLAGS=-I$INCLUDE_DIRECTORY
 #######################################################################
 # miscellaneous export
 #######################################################################
+export CFLAGS=''
+if [[ $ARCHITECTURE == 'x86_64' ]];then
+	export CFLAGS=-fPIC
+fi
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
+package='faac'
+version='1.29'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -94,9 +99,8 @@ chmod +x ./configure && ./configure \
 	--enable-static \
 	--enable-shared \
 	--enable-fast-install \
-	--enable-compile-c \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--with-mp4v2
+	
 make -j $PROCESSOR
 make install
 ldconfig

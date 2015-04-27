@@ -34,18 +34,28 @@ SOURCE_DOWNLOAD_URL=''
 #######################################################################
 PREFIX_DIR='/usr/local/encoder'
 #######################################################################
+# environment variables
+#######################################################################
+export PATH=$PREFIX_DIR/bin:$PATH
+export CPATH=$PREFIX_DIR/include:$CPATH
+export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
+#######################################################################
 # flags
 #######################################################################
-EXTRA_CFLAGS=-I$PREFIX_DIR/include
-EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
+INCLUDE_DIRECTORY=$PREFIX_DIR/include
+LIBRARY_DIRECTORY=$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$EXTRA_LDFLAGS
-export CPPFLAGS=$EXTRA_CFLAGS
+export LDFLAGS=-L$LIBRARY_DIRECTORY
+export CPPFLAGS=-I$INCLUDE_DIRECTORY
+#######################################################################
+# miscellaneous export
+#######################################################################
 #######################################################################
 # package
 #######################################################################
@@ -124,9 +134,19 @@ if [[ $_OSARCH == yum ]];then
 	gcc gcc-c++ gd gd-devel gettext gettext-devel giflib giflib-devel ImageMagick ImageMagick-devel \
 	libgcc libjpeg-turbo libjpeg-turbo-devel libpng libpng-devel libstdc++ libstdc++-devel libtiff libtiff-devel \
 	libtool libxml libxml-devel libxml2 libxml2-devel make neon neon-devel patch python python-devel samba-common zlib zlib-devel \
+	sqlite sqlite-devel \
+	doxygen \
+	libX11 libX11-devel libXrender libXrender-devel libxcb libxcb-devel \
 	
+	#libdrm libdrm-devel \
+	
+	glib2 glib2-devel gtk2 gtk2-devel librsvg2 librsvg2-devel \
+	
+	libpng libpng-devel \
+	glib glib-devel \
 	bison bison-devel bzip2 bzip2-devel \
-	openssl openssl-devel SDL SDL-devel gnutls gnutls-devel -y
+	openssl openssl-devel SDL SDL-devel gnutls gnutls-devel \
+	glibc glibc-devel -y
 	export ARCH=$(arch)
 fi
 
@@ -134,98 +154,22 @@ if [ -e "/etc/csf/csf.conf" ];then
 	csf -x
 fi
 
-if [ -e "/etc/debianversion" ];then
+#apt-cache search keyword
+
+if [[ $_OSARCH == dpkg ]];then
 	echo "Ensuring Debian packages ....."
 	apt-get install gcc libgd-dev gettext libpng-dev libstdc++-dev \
 		libtiff-dev libtool libxml2 libxml2-dev automake autoconf libncurses-dev ncurses-dev patch \
 		make -y
 fi
 
-#######################################################################
-# nasm
-# Status: Completed
-# Required: ccache
-# Optional: nroff, asciidoc, xmlto, acrodist, ps2pdf, pstopdf
-#######################################################################
-sh nasm.sh
-if [ -e $PREFIX_DIR/bin/nasm ]; then
+sh gtk-doc.sh
+if [ -d "/usr/bin/gtkdoc-check" ]; then
         echo " "
 else
         echo " "
         echo " "
-        echo -e $RED"nasm installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
-
-#######################################################################
-# yasm
-# Status: Completed
-# Required: libiconv, python
-# Optional: binutils, xmlto
-#######################################################################
-sh yasm.sh
-if [ -e $PREFIX_DIR/bin/yasm ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"yasm installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
-
-#######################################################################
-# sqlite
-# Status: Completed
-# Required: readline, ncurses
-# Optional: None
-#######################################################################
-sh sqlite.sh
-if [ -e $PREFIX_DIR/bin/sqlite3 ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"sqlite installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
-
-#######################################################################
-# git
-# Status: Completed
-# Required: None
-# Optional: None
-#######################################################################
-sh git.sh
-if [ -e $PREFIX_DIR/bin/git ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"git installation failed"$RESET
-        echo " "
-        echo " "
-        exit
-fi
-
-#######################################################################
-# subversion
-# Status: Completed
-# Required: None
-# Optional: None
-#######################################################################
-sh subversion.sh
-if [ -e $PREFIX_DIR/bin/svn ]; then
-        echo " "
-else
-        echo " "
-        echo " "
-        echo -e $RED"subversion installation failed"$RESET
+        echo -e $RED"gtk-doc installation failed"$RESET
         echo " "
         echo " "
         exit
@@ -235,11 +179,60 @@ fi
 # encoders
 #######################################################################
 
+sh glib.sh
+if [ -d $PREFIX_DIR/lib/libglib-2.0.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"glib installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+sh pixman.sh
+if [ -d $PREFIX_DIR/lib/pixman-1.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"pixman installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+sh cairo.sh
+if [ -d $PREFIX_DIR/lib/cairo.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"cairo installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+sh gavl.sh
+if [ -d $PREFIX_DIR/lib/gavl.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"gavl installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
 #######################################################################
 # frei0r
-# Status: Completed
+# Status: Pending
 # Required: opencv, gavl, cairo
 # Optional: doxygen
+# TODO: build cairo from source
 #######################################################################
 sh frei0r.sh
 if [ -d $PREFIX_DIR/lib/frei0r-1 ]; then
@@ -255,12 +248,12 @@ fi
 
 #######################################################################
 # libfdk-aac
-# Status: Completed
+# Status: Pending
 # Required: none
 # Optional: none
 #######################################################################
 sh libfdk-aac.sh
-if [ -e $PREFIX_DIR/lib/libfdk-aac.so ]; then
+if [ -e $PREFIX_DIR/lib/libfdk-aac.a ]; then
         echo " "
 else
         echo " "
@@ -273,12 +266,12 @@ fi
 
 #######################################################################
 # libilbc
-# Status: Completed
+# Status: Pending
 # Required: none
 # Optional: none
 #######################################################################
 sh libilbc.sh
-if [ -e $PREFIX_DIR/lib/libilbc.so ]; then
+if [ -e $PREFIX_DIR/lib/libilbc.a ]; then
         echo " "
 else
         echo " "
@@ -291,12 +284,12 @@ fi
 
 #######################################################################
 # libmodplug
-# Status: Completed
+# Status: Pending
 # Required: none
 # Optional: none
 #######################################################################
 sh libmodplug.sh
-if [ -e $PREFIX_DIR/lib/libmodplug.so ]; then
+if [ -e $PREFIX_DIR/lib/libmodplug.a ]; then
         echo " "
 else
         echo " "
@@ -309,12 +302,12 @@ fi
 
 #######################################################################
 # libogg
-# Status: Completed
+# Status: Pending
 # Required: none
 # Optional: none
 #######################################################################
 sh libogg.sh
-if [ -e $PREFIX_DIR/lib/libogg.so ]; then
+if [ -e $PREFIX_DIR/lib/libogg.a ]; then
         echo " "
 else
         echo " "
@@ -327,12 +320,12 @@ fi
 
 #######################################################################
 # libflac
-# Status: Completed
+# Status: Pending
 # Required: xmms, ogg, libiconv
 # Optional: clang
 #######################################################################
 sh libflac.sh
-if [ -e $PREFIX_DIR/lib/libFLAC.so ]; then
+if [ -e $PREFIX_DIR/lib/libFLAC.a ]; then
         echo " "
 else
         echo " "
@@ -345,12 +338,12 @@ fi
 
 #######################################################################
 # libvorbis
-# Status: Completed
+# Status: Pending
 # Required: ogg
 # Optional: none
 #######################################################################
 sh libvorbis.sh
-if [ -e $PREFIX_DIR/lib/libvorbis.so ]; then
+if [ -e $PREFIX_DIR/lib/libvorbis.a ]; then
         echo " "
 else
         echo " "
@@ -363,12 +356,12 @@ fi
 
 #######################################################################
 # speexdsp
-# Status: Completed
+# Status: Pending
 # Required: neon
 # Optional: FFT
 #######################################################################
 sh speexdsp.sh
-if [ -e $PREFIX_DIR/lib/libspeexdsp.so ]; then
+if [ -e $PREFIX_DIR/lib/libspeexdsp.a ]; then
         echo " "
 else
         echo " "
@@ -381,12 +374,12 @@ fi
 
 #######################################################################
 # libspeex
-# Status: Completed
+# Status: Pending
 # Required: OGG, FFT, SPEEXDSP
 # Optional: none
 #######################################################################
 sh libspeex.sh
-if [ -e $PREFIX_DIR/lib/libspeex.so ]; then
+if [ -e $PREFIX_DIR/lib/libspeex.a ]; then
         echo " "
 else
         echo " "
@@ -399,12 +392,12 @@ fi
 
 #######################################################################
 # liboggz
-# Status: Completed
+# Status: Pending
 # Required: ogg
 # Optional: doxygen, man2html
 #######################################################################
 sh liboggz.sh
-if [ -e $PREFIX_DIR/lib/liboggz.so ]; then
+if [ -e $PREFIX_DIR/lib/liboggz.a ]; then
         echo " "
 else
         echo " "
@@ -417,12 +410,12 @@ fi
 
 #######################################################################
 # libkate
-# Status: Completed
+# Status: Pending
 # Required: ogg, png, oggz, python
 # Optional: doxygen, bison, byacc, binutils
 #######################################################################
 sh libkate.sh
-if [[ -e $PREFIX_DIR/lib/libkate.so || -e $PREFIX_DIR/lib/libkate.a ]]; then
+if [[ -e $PREFIX_DIR/lib/libkate.a || -e $PREFIX_DIR/lib/libkate.a ]]; then
         echo " "
 else
         echo " "
@@ -435,12 +428,12 @@ fi
 
 #######################################################################
 # libao
-# Status: Completed
+# Status: Pending
 # Required: alsa
 # Optional: esound, alsa, arts, nas, pulse, wmm
 #######################################################################
 sh libao.sh
-if [[ -e $PREFIX_DIR/lib/libao.so || -e $PREFIX_DIR/lib/libao.a ]]; then
+if [ -e $PREFIX_DIR/lib/libao.a ]; then
         echo " "
 else
         echo " "
@@ -453,7 +446,7 @@ fi
 
 #######################################################################
 # vorbis-tools
-# Status: Completed
+# Status: Pending
 # Required: OGG, VORBIS, CURL, AO, flac, speex, kate
 # Optional: libpth, libiconv, gettext, libintl
 #######################################################################
@@ -471,12 +464,12 @@ fi
 
 #######################################################################
 # libtheora
-# Status: Completed
+# Status: Pending
 # Required: ogg, vorbis, png, cairo
 # Optional: sdl
 #######################################################################
 sh libtheora.sh
-if [ -e $PREFIX_DIR/lib/libtheora.so ]; then
+if [ -e $PREFIX_DIR/lib/libtheora.a ]; then
         echo " "
 else
         echo " "
@@ -489,12 +482,12 @@ fi
 
 #######################################################################
 # libsndfile
-# Status: Completed
+# Status: Pending
 # Required: flac, ogg, speex, vorbis, sqlite
 # Optional: none
 #######################################################################
 sh libsndfile.sh
-if [ -e $PREFIX_DIR/lib/libsndfile.so ]; then
+if [ -e $PREFIX_DIR/lib/libsndfile.a ]; then
         echo " "
 else
         echo " "
@@ -507,7 +500,7 @@ fi
 
 #######################################################################
 # libmp3lame
-# Status: Completed
+# Status: Pending
 # Required: sndfile, libiconv
 # Optional: gtk, ncurses
 #######################################################################
@@ -525,12 +518,12 @@ fi
 
 #######################################################################
 # libopencore-amr
-# Status: Completed
+# Status: Pending
 # Required: none
 # Optional: none
 #######################################################################
 sh libopencore-amr.sh
-if [[ -e $PREFIX_DIR/lib/libopencore-amrnb.so && -e $PREFIX_DIR/lib/libopencore-amrwb.so ]]; then
+if [ -e $PREFIX_DIR/lib/libopencore-amrwb.a ]; then
         echo " "
 else
         echo " "
@@ -543,12 +536,12 @@ fi
 
 #######################################################################
 # libopus
-# Status: Completed
+# Status: Pending
 # Required: gawk
 # Optional: none
 #######################################################################
 sh libopus.sh
-if [[ -e $PREFIX_DIR/lib/libopus.so || -e $PREFIX_DIR/lib/libopus.a ]]; then
+if [ -e $PREFIX_DIR/lib/libopus.a ]; then
         echo " "
 else
         echo " "
@@ -584,7 +577,7 @@ fi
 # Optional: libsoup_gnome, libsoup
 #######################################################################
 sh libquvi.sh
-if [[ -e $PREFIX_DIR/lib/libquvi.so || -e $PREFIX_DIR/lib/libquvi.a ]]; then
+if [ -e $PREFIX_DIR/lib/libquvi.a ]; then
         echo " "
 else
         echo " "
@@ -597,7 +590,7 @@ fi
 
 #######################################################################
 # quvi
-# Status: Completed
+# Status: Pending
 # Required: libquvi, libcurl
 # Optional: none
 #######################################################################
@@ -617,12 +610,12 @@ fi
 
 #######################################################################
 # libtwolame
-# Status: Completed
+# Status: Pending
 # Required: sndfile, gawk
 # Optional: none
 #######################################################################
 sh libtwolame.sh
-if [[ -e $PREFIX_DIR/lib/libtwolame.so || -e $PREFIX_DIR/lib/libtwolame.a ]]; then
+if [ -e $PREFIX_DIR/lib/libtwolame.a ]; then
         echo " "
 else
         echo " "
@@ -635,12 +628,12 @@ fi
 
 #######################################################################
 # libvo-aacenc
-# Status: Completed
+# Status: Pending
 # Required: gawk
 # Optional: none
 #######################################################################
 sh vo-aacenc.sh
-if [[ -e $PREFIX_DIR/lib/libvo-aacenc.so || -e $PREFIX_DIR/lib/libvo-aacenc.a ]]; then
+if [ -e $PREFIX_DIR/lib/libvo-aacenc.a ]; then
         echo " "
 else
         echo " "
@@ -653,12 +646,12 @@ fi
 
 #######################################################################
 # libvo-amrwbenc
-# Status: Completed
+# Status: Pending
 # Required: gawk
 # Optional: none
 #######################################################################
 sh vo-amrwbenc.sh
-if [[ -e $PREFIX_DIR/lib/libvo-amrwbenc.so || -e $PREFIX_DIR/lib/libvo-amrwbenc.a ]]; then
+if [ -e $PREFIX_DIR/lib/libvo-amrwbenc.a ]; then
         echo " "
 else
         echo " "
@@ -671,12 +664,12 @@ fi
 
 #######################################################################
 # libvpx
-# Status: Completed
+# Status: Pending
 # Required: ccache, yasm, nasm
 # Optional: none
 #######################################################################
 sh libvpx.sh
-if [[ -e $PREFIX_DIR/lib/libvpx.so || -e $PREFIX_DIR/lib/libvpx.a ]]; then
+if [ -e $PREFIX_DIR/lib/libvpx.a ]; then
         echo " "
 else
         echo " "
@@ -689,12 +682,12 @@ fi
 
 #######################################################################
 # libwebp
-# Status: Completed
+# Status: Pending
 # Required: png, jpeg, tiff, gif
 # Optional: gl
 #######################################################################
 sh libwebp.sh
-if [[ -e $PREFIX_DIR/lib/libwebp.so || -e $PREFIX_DIR/lib/libwebp.a ]]; then
+if [ -e $PREFIX_DIR/lib/libwebp.a ]; then
         echo " "
 else
         echo " "
@@ -706,13 +699,86 @@ else
 fi
 
 #######################################################################
-# libx264
-# Status: Completed
-# Required: opencl, avisynth, swscale, libavformat, ffms, gpac(mp4box) lsmash
+# liba52dec
+# Status: Pending
+# Required: none
 # Optional: none
 #######################################################################
+sh liba52dec.sh
+if [ -e $PREFIX_DIR/lib/liba52.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"liba52 installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libfaac
+# Status: Pending
+# Required: mp4v2
+# Optional: none
+#######################################################################
+sh libfaac.sh
+if [ -e $PREFIX_DIR/lib/libfaac.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libfaac installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libfaad
+# Status: Pending
+# Required: libfaac
+# Optional: mpeg4ip, drm
+#######################################################################
+sh libfaad2.sh
+if [ -e $PREFIX_DIR/lib/libfaad.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libfaad installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# liblsmash
+# Status: Pending
+# Required: none
+# Optional: none
+#######################################################################
+
+sh l-smash.sh
+if [ -e $PREFIX_DIR/lib/liblsmash.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"liblsmash installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# libx264
+# Status: Pending
+# Required: opencl, swscale, libavformat, ffms, gpac(mp4box) lsmash
+# Optional: avisynth
+#######################################################################
 sh libx264.sh
-if [[ -e $PREFIX_DIR/lib/libx264.so || -e $PREFIX_DIR/lib/libx264.a ]]; then
+if [ -e $PREFIX_DIR/lib/libx264.a ]; then
         echo " "
 else
         echo " "
@@ -725,12 +791,12 @@ fi
 
 #######################################################################
 # libx264
-# Status: Completed
+# Status: Pending
 # Required: yasm, libnuma
-# Optional: none
+# Optional: avisynth, swscale, libavformat, gpac, lsmash
 #######################################################################
 sh libx265.sh
-if [[ -e $PREFIX_DIR/lib/libx265.so || -e $PREFIX_DIR/lib/libx265.a ]]; then
+if [ -e $PREFIX_DIR/lib/libx265.a ]; then
         echo " "
 else
         echo " "
@@ -743,12 +809,12 @@ fi
 
 #######################################################################
 # libxvid
-# Status: Completed
+# Status: Pending
 # Required: yasm
 # Optional: none
 #######################################################################
 sh libxvid.sh
-if [[ -e $PREFIX_DIR/lib/libxvidcore.so || -e $PREFIX_DIR/lib/libxvidcore.a ]]; then
+if [ -e $PREFIX_DIR/lib/libxvidcore.a ]; then
         echo " "
 else
         echo " "
@@ -779,9 +845,63 @@ else
 fi
 
 #######################################################################
-# Mp4Box
+# libffms2
+# Status: Pending
+# Required: ffmpeg
+# Optional: libav
 #######################################################################
-#sh mp4box.sh
+
+sh libffms2.sh
+if [ -e $PREFIX_DIR/lib/libffms2.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libffms2 installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# MP4Box
+# Status: Pending
+# Required: FreeType, ZLIB, JPEG, PNG, FAAD, XVID, FFMPEG, OGG, vorbis, theora, openjpeg, a52
+# Optional: SpiderMonkey, MAD
+#######################################################################
+sh mp4box.sh
+if [[ -e $PREFIX_DIR/bin/MP4Box && -e $PREFIX_DIR/bin/MP4Client && -e $PREFIX_DIR/bin/MP42TS ]]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"MP4Box installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
+
+#######################################################################
+# rebuild
+#######################################################################
+
+#######################################################################
+# libx264
+# Status: Pending
+# Required: opencl, swscale, libavformat, ffms, gpac(mp4box) lsmash
+# Optional: avisynth
+#######################################################################
+sh libx264.sh
+if [ -e $PREFIX_DIR/lib/libx264.a ]; then
+        echo " "
+else
+        echo " "
+        echo " "
+        echo -e $RED"libx264 installation failed"$RESET
+        echo " "
+        echo " "
+        exit
+fi
 
 #######################################################################
 # post

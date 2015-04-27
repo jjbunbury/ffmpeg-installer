@@ -56,11 +56,13 @@ export CPPFLAGS=-I$INCLUDE_DIRECTORY
 #######################################################################
 # miscellaneous export
 #######################################################################
+#export LIBAV_CFLAGS=-I$INCLUDE_DIRECTORY
+#export LIBAV_LIBS=-L$LIBRARY_DIRECTORY
 #######################################################################
 # package
 #######################################################################
-package='opencore-amr'
-version='0.1.3'
+package='ffms2'
+version='2.20'
 extension='tar.gz'
 #######################################################################
 # Detect platform
@@ -93,10 +95,7 @@ chmod +x ./configure && ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
 	--enable-shared \
-	--enable-fast-install \
-	--enable-compile-c \
-	--enable-amrnb-encoder \
-	--enable-amrnb-decoder
+	--enable-fast-install
 make -j $PROCESSOR
 make install
 ldconfig

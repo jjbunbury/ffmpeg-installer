@@ -34,18 +34,28 @@ SOURCE_DOWNLOAD_URL='git://git.videolan.org/x264.git'
 #######################################################################
 PREFIX_DIR='/usr/local/encoder'
 #######################################################################
+# environment variables
+#######################################################################
+export PATH=$PREFIX_DIR/bin:$PATH
+export CPATH=$PREFIX_DIR/include:$CPATH
+export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
+#######################################################################
 # flags
 #######################################################################
-EXTRA_CFLAGS=-I$PREFIX_DIR/include
-EXTRA_LDFLAGS=-L$PREFIX_DIR/lib
+INCLUDE_DIRECTORY=$PREFIX_DIR/include
+LIBRARY_DIRECTORY=$PREFIX_DIR/lib
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export TMPDIR=$HOME/tmp
 export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=$EXTRA_LDFLAGS
-export CPPFLAGS=$EXTRA_CFLAGS
+export LDFLAGS=-L$LIBRARY_DIRECTORY
+export CPPFLAGS=-I$INCLUDE_DIRECTORY
+#######################################################################
+# miscellaneous export
+#######################################################################
 #######################################################################
 # package
 #######################################################################
@@ -56,44 +66,6 @@ extension=''
 # Detect platform
 #######################################################################
 PLATFORM=`uname`
-#######################################################################
-# Detect package type from /etc/issue
-#######################################################################
-_detect_arch() {
-  local _osarch _osarch
-
-  _osarch="$1"; shift
-
-  grep -qis "$@" /etc/issue \
-  && _OSARCH="$_osarch" && return
-
-  grep -qis "$@" /etc/os-release \
-  && _OSARCH="$_osarch" && return
-}
-
-_detect_distribution() {
-  _detect_arch pacman "Arch Linux" && return
-  _detect_arch dpkg "Debian GNU/Linux" && return
-  _detect_arch dpkg "Ubuntu" && return
-  _detect_arch cave "Exherbo Linux" && return
-  _detect_arch yum "CentOS" && return
-  _detect_arch yum "Red Hat" && return
-  _detect_arch yum "Fedora" && return
-  _detect_arch zypper "SUSE" && return
-
-  [[ -z "$_OSARCH" ]] || return
-  [[ -x "/usr/bin/apt-get" ]] && _OSARCH="dpkg" && return
-  [[ -x "/usr/bin/cave" ]] && _OSARCH="cave" && return
-  [[ -x "/usr/bin/yum" ]] && _OSARCH="yum" && return
-  [[ -x "/opt/local/bin/port" ]] && _OSARCH="macports" && return
-  [[ -x "/usr/bin/emerge" ]] && _OSARCH="portage" && return
-  [[ -x "/usr/bin/zypper" ]] && _OSARCH="zypper" && return
-  [[ -x "/usr/sbin/pkg" ]] && _OSARCH="pkgng" && return
-
-  command -v brew >/dev/null && _OSARCH="homebrew" && return
-
-  return 1
-}
 #######################################################################
 # tar tools
 #######################################################################
@@ -108,23 +80,19 @@ elif [[ $extension == 'tar.xz' ]];then
 	command='-Jxvf'
 fi
 #######################################################################
-# detect distribution
+# compile package
 #######################################################################
-_detect_distribution
 echo -e $RED"Installation of $package ....... started"$RESET
-if [[ $_OSARCH == yum ]];then
-	yum -y install cairo cairo-devel gavl gavl-devel
-fi
-if [ -e $PREFIX_DIR/bin/git ]; then
+if [ -e "/usr/bin/git" ]; then
 	cd $SOURCE_DIR
 	echo -e $RED"removing old installation of $package"$RESET
 	rm --recursive --force --verbose $package*
-	$PREFIX_DIR/bin/git clone $SOURCE_DOWNLOAD_URL $package
+	git clone $SOURCE_DOWNLOAD_URL $package
 	cd $package
 	chmod +x ./configure && ./configure \
 		--prefix=$PREFIX_DIR \
-		--extra-cflags=$EXTRA_CFLAGS \
-		--extra-ldflags=$EXTRA_LDFLAGS \
+		--extra-cflags=-I$INCLUDE_DIRECTORY \
+		--extra-ldflags=-L$LIBRARY_DIRECTORY \
 		--enable-static \
 		--enable-shared
 	make -j $PROCESSOR

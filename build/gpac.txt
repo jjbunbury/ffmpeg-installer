@@ -1,0 +1,135 @@
+[root@dedicated gpac-0.5.2]# ./configure --help
+
+Usage: configure [options]
+Options: [defaults in brackets after descriptions]
+
+GPAC configuration options:
+  --help                   print this message
+  --prefix=PREFIX          install in PREFIX [/usr/local]
+  --mandir=DIR             man documentation in DIR [PREFIX/man]
+
+  --verbose                enable verbose building [no]
+  --source-path=PATH       path of source code []
+  --cross-prefix=PREFIX    use PREFIX for compile tools []
+  --target-os=TARGETOS     use TARGETOS for compile tools []
+  --cc=CC                  use C   compiler CC  []
+  --cxx=CXX                use C++ compiler CXX []
+  --make=MAKE              use specified make [make]
+  --extra-cflags=ECFLAGS   add ECFLAGS to CFLAGS []
+  --extra-ldflags=ELDFLAGS add ELDFLAGS to LDFLAGS []
+  --extra-libs=ELIBS       add ELIBS []
+  --cpu=CPU                force cpu to CPU  [x86_64]
+  --sdl-cfg=SDL_PATH       specify path to sdl-config for local install []
+  --enable-sdl-static      use static SDL linking [default=no]
+  --X11-path=X11_PATH      specify path for X11 includes and libraries [/usr/X11                                                                                                                                                             R6]
+  --dxsdk-path=DX_PATH     specify directX SDK for MinGW []
+  --xulsdk-path=XUL_PATH   specify Mozilla XUL (Gecko) SDK include path [/usr/li                                                                                                                                                             b/xulrunner/sdk/include]
+  --mozdir=MOZ_PATH        specify mozilla main directory path for system instal                                                                                                                                                             l
+  --extra-ff-ldflags=ELDFLAGS add ELDFLAGS to FFMPEG LDFLAGS []
+
+  --enable-debug           produce debug version
+  --enable-gprof           enable profiling
+  --enable-gcov            enable coverage
+  --enable-pic             enable Position Independant Code for shared objects
+  --strip                  enable strip
+  --std-allocator          uses standard lib memory allocator
+  --static-modules         uses static modules whenever possible
+  --track-memory           enable tracking of all memory allocated by gpac
+  --disable-opt            disable GCC optimizations
+  --disable-ipv6           disable IPV6 support
+  --disable-wx             disable wxWidgets support
+  --disable-platinum       disable Platinum UPnP support
+  --disable-alsa           disable Alsa audio
+  --disable-oss-audio      disable OSS audio
+  --enable-jack            enable  Jack audio
+  --disable-jack           disable Jack audio
+  --enable-pulseaudio      enable  Pulse audio
+  --disable-pulseaudio     disable Pulse audio
+  --disable-x11-shm        disable X11 shared memory support
+  --disable-x11-xv         disable X11 Xvideo support
+  --enable-fixed-point     enable fixed-point math
+  --enable-tinygl          enable TinyGL support
+  --enable-joystick        enable joystick support
+  --disable-ssl            disable OpenSSL support
+  --enable-amr-nb-fixed    enable AMR NB fixed-point decoder
+  --enable-amr-nb          enable AMR NB library
+  --enable-amr-wb          enable AMR WB library
+  --enable-amr             enable both AMR NB and WB libraries
+  --enable-static-bin      GPAC static build
+  --static-mp4box          configure for static linking of MP4Box.
+  --enable-depth           enables depth handling in the compositor
+
+Configuration options for libgpac - all options can be enabled with --enable-opt                                                                                                                                                             name
+  --disable-all            disables all features in libgpac
+  --disable-3d             disable 3D rendering
+  --disable-svg            disable SVG
+  --disable-vrml           disable MPEG-4/VRML/X3D
+  --disable-x3d            disable X3D only
+  --disable-odf            disable full support of MPEG-4 OD Framework
+  --disable-bifs           disable BIFS
+  --disable-bifs-enc       disable BIFS coder
+  --disable-laser          disable LASeR coder
+  --disable-saf            disable SAF container
+  --disable-seng           disable scene encoder engine
+  --disable-qtvr           disable import of Cubic QTVR files
+  --disable-avi            disable AVI
+  --disable-ogg            disable OGG
+  --disable-m2ps           disable MPEG2 PS
+  --disable-m2ts           disable MPEG2 TS
+  --disable-m2ts-mux       disable MPEG2 TS Multiplexer
+  --disable-dvb4linux      disable dvb4linux support
+  --disable-parsers        disable AV parsers
+  --disable-import         disable media importers
+  --disable-export         disable media exporters
+  --disable-swf            disable SWF import
+  --disable-scene-stats    disable scene graph statistics
+  --disable-scene-dump     disable scene graph dump
+  --disable-scene-encode   disable BIFS & LASeR to ISO File Format encoding
+  --disable-loader-isoff   disable scene loading from ISO File Format
+  --disable-loader-bt      disable scene loading from ISO File Format
+  --disable-loader-xmt     disable scene loading from ISO File Format
+  --disable-od-dump        disable OD dump
+  --disable-isom-dump      disable ISOM dump
+  --disable-mcrypt         disable mcrypt
+  --disable-isoff          disable ISO File Format
+  --disable-isoff-write    disable ISO File Format edit/write
+  --disable-isoff-hint     disable ISO File Format hinting
+  --disable-isoff-frag     disable fragments in ISO File Format
+  --disable-isoff-hds      disable HDS support in ISO File Format
+  --disable-streaming      disable RTP/RTSP/SDP
+  --disable-dvbx           disable DVB-specific tools (MPE, FEC, DSM-CC)
+  --disable-vobsub         disable VobSub support
+  --disable-sman           disable scene manager
+  --disable-ttxt           disable TTXT (3GPP / MPEG-4 Timed Text) support
+  --disable-player         disable player (terminal and compositor)
+  --disable-scenegraph     disable scenegraph, scene parsers and player (termina                                                                                                                                                             l and compositor)
+  --disable-hevc           disable HEVC support
+
+Extra libraries configuration. You can turn a libray off or force using the loca                                                                                                                                                             l version in gpac/extra_lib/
+  --use-js=OPT             force SpiderMonkey ECMAScript OPT=[no,local]
+  --use-ft=OPT             force FreeType OPT=[no,local]
+  --use-zlib=OPT           force ZLIB OPT=[no,system,local]
+  --use-jpeg=OPT           force JPEG OPT=[no,local]
+  --use-png=OPT            force PNG OPT=[no,local]
+  --use-faad=OPT           force FAAD OPT=[no,local]
+  --use-mad=OPT            force MAD OPT=[no,local]
+  --use-xvid=OPT           force XVID OPT=[no,local]
+  --use-ffmpeg=OPT         force FFMPEG OPT=[no,local]
+  --use-ogg=OPT            force OGG OPT=[no,system,local]
+  --use-vorbis=OPT         force vorbis OPT=[no,system,local]
+  --use-theora=OPT         force theora OPT=[no,system,local]
+  --use-openjpeg=OPT       force openjpeg OPT=[no,system,local]
+  --use-a52=OPT            force a52 (ac3) OPT=[no,system,local]
+
+NOTE: The object files are build at the place where configure is launched
+[root@dedicated gpac-0.5.2]# yum search teamviewer
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirrors.atwab.net
+ * epel: mirrors.einstein.yu.edu
+ * extras: centos.mirror.ca.planethoster.net
+ * rpmforge: mirror.us.leaseweb.net
+ * updates: centos.mirror.netelligent.ca
+Warning: No matches found for: teamviewer
+No matches found
+[root@dedicated gpac-0.5.2]#
