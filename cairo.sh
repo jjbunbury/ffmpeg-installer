@@ -36,32 +36,28 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
-export TMPDIR=$HOME/tmp
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################
-export pixman_CFLAGS=-I$INCLUDE_DIRECTORY/pixman-1
-export pixman_LIBS="-L$LIBRARY_DIRECTORY -lpixman-1"
-export GOBJECT_CFLAGS="-I$INCLUDE_DIRECTORY/glib-2.0 -I$LIBRARY_DIRECTORY/glib-2.0/include"
-export GOBJECT_LIBS="-L$LIBRARY_DIRECTORY -lgobject-2.0"
-export glib_CFLAGS="-I$INCLUDE_DIRECTORY/glib-2.0 -I$LIBRARY_DIRECTORY/glib-2.0/include"
-export glib_LIBS="-L$LIBRARY_DIRECTORY -lglib-2.0"
+export pixman_CFLAGS="-I$PREFIX_DIR/include/pixman-1"
+export pixman_LIBS="-L$PREFIX_DIR/lib -lpixman-1"
+export GOBJECT_CFLAGS="-I$PREFIX_DIR/include/glib-2.0 -I$PREFIX_DIR/lib/glib-2.0/include"
+export GOBJECT_LIBS="-L$PREFIX_DIR/lib -lgobject-2.0"
+export glib_CFLAGS="-I$PREFIX_DIR/include/glib-2.0 -I$PREFIX_DIR/lib/glib-2.0/include"
+export glib_LIBS="-L$PREFIX_DIR/lib -lglib-2.0"
 #######################################################################
 # package
 #######################################################################

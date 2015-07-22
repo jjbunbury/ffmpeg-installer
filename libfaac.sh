@@ -36,24 +36,20 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
 export ARCHITECTURE=`arch`
-export TMPDIR=$HOME/tmp
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################

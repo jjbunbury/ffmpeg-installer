@@ -36,36 +36,32 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
-export TMPDIR=$HOME/tmp
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################
-export FLAC_CFLAGS=-I$INCLUDE_DIRECTORY
-export FLAC_LIBS="-L$LIBRARY_DIRECTORY -lFLAC"
-export OGG_CFLAGS=-I$INCLUDE_DIRECTORY
-export OGG_LIBS="-L$LIBRARY_DIRECTORY -logg"
-export SPEEX_CFLAGS=-I$INCLUDE_DIRECTORY
-export SPEEX_LIBS="-L$LIBRARY_DIRECTORY -lspeex"
-export VORBIS_CFLAGS=-I$INCLUDE_DIRECTORY
-export VORBIS_LIBS="-L$LIBRARY_DIRECTORY -lvorbis"
-export VORBISENC_CFLAGS=-I$INCLUDE_DIRECTORY
-export VORBISENC_LIBS="-L$LIBRARY_DIRECTORY -lvorbisenc"
+export FLAC_CFLAGS=-I$PREFIX_DIR/include
+export FLAC_LIBS="-L$PREFIX_DIR/lib -lFLAC"
+export OGG_CFLAGS=-I$PREFIX_DIR/include
+export OGG_LIBS="-L$PREFIX_DIR/lib -logg"
+export SPEEX_CFLAGS=-I$PREFIX_DIR/include
+export SPEEX_LIBS="-L$PREFIX_DIR/lib -lspeex"
+export VORBIS_CFLAGS=-I$PREFIX_DIR/include
+export VORBIS_LIBS="-L$PREFIX_DIR/lib -lvorbis"
+export VORBISENC_CFLAGS=-I$PREFIX_DIR/include
+export VORBISENC_LIBS="-L$PREFIX_DIR/lib -lvorbisenc"
 export SQLITE3_CFLAGS=`pkg-config sqlite3 --cflags`
 export SQLITE3_LIBS=`pkg-config sqlite3 --libs`
 #######################################################################

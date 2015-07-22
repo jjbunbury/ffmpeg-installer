@@ -36,30 +36,26 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
-export TMPDIR=$HOME/tmp
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################
-export OGG_CFLAGS=-I$INCLUDE_DIRECTORY
-export OGG_LIBS="-L$LIBRARY_DIRECTORY -logg"
-export VORBIS_CFLAGS=-I$INCLUDE_DIRECTORY
-export VORBIS_LIBS="-L$LIBRARY_DIRECTORY -lvorbis"
+export OGG_CFLAGS=-I$PREFIX_DIR/include
+export OGG_LIBS="-L$PREFIX_DIR/lib -logg"
+export VORBIS_CFLAGS=-I$PREFIX_DIR/include
+export VORBIS_LIBS="-L$PREFIX_DIR/lib -lvorbis"
 #######################################################################
 # package
 #######################################################################

@@ -36,23 +36,19 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
-export TMPDIR=$HOME/tmp
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib -lm"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################
@@ -105,95 +101,34 @@ chmod +x ./configure
 ./configure \
 	--prefix=$PREFIX_DIR \
 	--enable-static \
-	--enable-shared \
-	--extra-cflags=-I$INCLUDE_DIRECTORY \
-	--extra-ldflags=-L$LIBRARY_DIRECTORY \
-	--pkg-config=pkg-config \
-	--enable-pthreads \
+	--disable-shared \
+
+	--extra-cflags=-I$PREFIX_DIR/include \
+	--extra-cxxflags=-I$PREFIX_DIR/include \
+	--extra-ldflags=-L$PREFIX_DIR/lib \
+	--extra-version=static
+	
 	--enable-gpl \
 	--enable-version3 \
 	--enable-nonfree \
-	--disable-avisynth \
-	--enable-fontconfig \
-	--enable-frei0r \
-	--enable-gnutls \
-	--enable-ladspa \
-	--disable-libaacplus \
-	--enable-libass \
-	--disable-libbluray \
-	--disable-libbs2b \
-	--disable-libcaca \
-	--disable-libcelt \
-	--disable-libcdio \
-	--disable-libdc1394 \
-	--disable-libfaac \
-	--enable-libfdk-aac \
-	--disable-libflite \
-	--enable-libfreetype \
-	--enable-libfribidi \
-	--disable-libgme \
-	--disable-libgsm \
-	--disable-libiec61883 \
-	--enable-libilbc \
-	--enable-libmodplug \
-	--enable-libmp3lame \
-	--disable-libnut \
-	--enable-libopencore-amrnb \
-	--enable-libopencore-amrwb \
-	--enable-libopencv \
-	--enable-libopenjpeg \
-	--enable-libopus \
-	--disable-libpulse \
-	--enable-libquvi \
-	--disable-librtmp \
-	--disable-libschroedinger \
-	--disable-libshine \
-	--disable-libsmbclient \
-	--disable-libsoxr \
-	--enable-libspeex \
-	--disable-libssh \
-	--disable-libstagefright-h264 \
-	--enable-libtheora \
-	--enable-libtwolame \
-	--disable-libutvideo \
-	--disable-libv4l2 \
-	--disable-libvidstab \
-	--enable-libvo-aacenc \
-	--enable-libvo-amrwbenc \
-	--enable-libvorbis \
-	--enable-libvpx \
-	--disable-libwavpack \
-	--enable-libwebp \
-	--enable-libx264 \
-	--enable-libx265 \
-	--disable-libxavs \
-	--disable-libxcb \
-	--disable-libxcb-shm \
-	--disable-libxcb-xfixes \
-	--disable-libxcb-shape \
-	--enable-libxvid \
-	--disable-libzmq \
-	--disable-libzvbi \
-	--disable-decklink \
-	--disable-openal \
-	--disable-opencl \
-	--disable-opengl \
-	--disable-openssl \
-	--disable-x11grab \
+	
 	--enable-pic \
 	--enable-thumb \
 	--enable-lto \
+
 	--enable-ffmpeg \
 	--enable-ffplay \
 	--enable-ffprobe \
-	--enable-ffserver
+	--enable-ffserver \
+
+	
 make -j $PROCESSOR
-make tools/qt-faststart
+#make tools/qt-faststart
 make install
-cp -vf tools/qt-faststart $PREFIX_DIR/bin
-ln -sf $PREFIX_DIR/bin/ffmpeg /usr/local/bin/ffmpeg
-ln -sf $PREFIX_DIR/bin/ffmpeg /usr/bin/ffmpeg
-ln -sf $PREFIX_DIR/bin/qt-faststart /usr/local/bin/qt-faststart
-ln -sf $PREFIX_DIR/bin/qt-faststart /usr/bin/qt-faststart
+#cp -vf tools/qt-faststart $PREFIX_DIR/bin
+#ln -sf $PREFIX_DIR/bin/ffmpeg /usr/local/bin/ffmpeg
+#ln -sf $PREFIX_DIR/bin/ffmpeg /usr/bin/ffmpeg
+#ln -sf $PREFIX_DIR/bin/qt-faststart /usr/local/bin/qt-faststart
+#ln -sf $PREFIX_DIR/bin/qt-faststart /usr/bin/qt-faststart
 ldconfig
 echo -e $RED"Installation of $package ....... Completed"$RESET

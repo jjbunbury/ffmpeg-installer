@@ -36,31 +36,27 @@ PREFIX_DIR='/usr/local/encoder'
 #######################################################################
 # environment variables
 #######################################################################
-export PATH=$PREFIX_DIR/bin:$PATH
-export CPATH=$PREFIX_DIR/include:$CPATH
-export LD_LIBRARY_PATH=$PREFIX_DIR/lib:$LD_LIBRARY_PATH
-export LIBRARY_PATH=$PREFIX_DIR/lib:$LIBRARY_PATH
-#######################################################################
-# flags
-#######################################################################
-INCLUDE_DIRECTORY=$PREFIX_DIR/include
-LIBRARY_DIRECTORY=$PREFIX_DIR/lib
+export PATH="$PREFIX_DIR/bin:$PATH"
+export CPATH="$PREFIX_DIR/include:$CPATH"
+export LD_LIBRARY_PATH="$PREFIX_DIR/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$PREFIX_DIR/lib:$LIBRARY_PATH"
 #######################################################################
 # export
 #######################################################################
 export PROCESSOR=`cat "/proc/cpuinfo" | grep "processor" | wc -l`
-export TMPDIR=$HOME/tmp
-#export PKG_CONFIG_LIBDIR=$PREFIX_DIR/lib/pkgconfig
-export PKG_CONFIG_PATH=$PREFIX_DIR/lib/pkgconfig
-export LDFLAGS=-L$LIBRARY_DIRECTORY
-export CPPFLAGS=-I$INCLUDE_DIRECTORY
+export TMPDIR="$HOME/tmp"
+#export PKG_CONFIG_LIBDIR="$PREFIX_DIR/lib/pkgconfig"
+export PKG_CONFIG_PATH="$PREFIX_DIR/lib/pkgconfig"
+export LDFLAGS="-L$PREFIX_DIR/lib"
+export CFLAGS="-I$PREFIX_DIR/include"
+export CPPFLAGS="-I$PREFIX_DIR/include"
 #######################################################################
 # miscellaneous export
 #######################################################################
-export GAVL_CFLAGS=-I$INCLUDE_DIRECTORY/gavl
-export GAVL_LIBS="-L$LIBRARY_DIRECTORY -lgavl"
-export CAIRO_CFLAGS=-I$INCLUDE_DIRECTORY/cairo
-export CAIRO_LIBS="-L$LIBRARY_DIRECTORY -lcairo"
+export GAVL_CFLAGS=-I$PREFIX_DIR/include/gavl
+export GAVL_LIBS="-L$PREFIX_DIR/lib -lgavl"
+export CAIRO_CFLAGS=-I$PREFIX_DIR/include/cairo
+export CAIRO_LIBS="-L$PREFIX_DIR/lib -lcairo"
 #######################################################################
 # package
 #######################################################################
